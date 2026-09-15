@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thực Đơn - Tiệm Hai Sáu</title>
+    <style>
+        /* --- RESET & CƠ BẢN --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f6f0;
+            color: #333;
+        }
+
+        /* --- THANH MENU (NAVBAR) --- */
+        .navbar {
+            background-color: #103825;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .navbar .nav-links li a {
+            color: #d1e7dd;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-links li a:hover,
+        .navbar .nav-links li a.active {
+            color: #ff9f1a;
+        }
+
+        .navbar .nav-btn {
+            background-color: #f39c12;
+            color: #fff !important;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .navbar .nav-btn:hover {
+            background-color: #e67e22;
+        }
+
+        /* --- KHU VỰC THỰC ĐƠN DẠNG HÀNG DỌC --- */
+        .menu-section {
+            padding: 50px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            color: #103825;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* Thanh lọc danh mục */
+        .category-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .cat-btn {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            background-color: #103825;
+            color: #fff;
+            border-color: #103825;
+        }
+
+        /* Danh sách dọc */
+        .vertical-menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Từng dòng sản phẩm */
+        .menu-row {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            gap: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .menu-row:hover {
+            transform: translateY(-2px);
+        }
+
+        .menu-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            background-color: #eee;
+        }
+
+        .menu-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .menu-info h3 {
+            font-size: 18px;
+            color: #103825;
+        }
+
+        .menu-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Ghi chú bên cạnh/dưới tên món */
+        .menu-note {
+            font-size: 13px;
+            color: #e67e22;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .menu-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .menu-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #103825;
+        }
+
+        .add-cart-btn {
+            background-color: #f39c12;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            transition: background 0.2s;
+        }
+
+        .add-cart-btn:hover {
+            background-color: #e67e22;
+        }
+
+        /* Responsive cho điện thoại */
+        @media (max-width: 600px) {
+            .menu-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .menu-right {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                border-top: 1px solid #eee;
+                padding-top: 10px;
+            }
+            .menu-img {
+                width: 100%;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- THANH MENU ĐIỀU HƯỚNG -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">🌿 Tiệm Hai Sáu</a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="menu-item">Trang Chủ</a></li>
+            <li><a href="thucdon.html" class="menu-item active">Thực Đơn</a></li>
+            <li><a href="gioithieu.html" class="menu-item">Câu Chuyện</a></li>
+            <li><a href="tel:0326650638" class="menu-item">Liên Hệ</a></li>
+            <li><a href="thucdon.html" class="nav-btn">Gọi Đặt Món</a></li>
+        </ul>
+    </nav>
+
+    <!-- NỘI DUNG TRANG THỰC ĐƠN DẠNG HÀNG DỌC -->
+    <section class="menu-section">
+        <div class="menu-container">
+            <div class="section-header">
+                <h2>🍹 Thực Đơn Hằng Ngày</h2>
+                <p>Danh sách các món trà trái cây, sữa chua và ăn vặt pha chế tươi mỗi ngày tại Măng Đen.</p>
+            </div>
+
+            <!-- Thanh lọc danh mục -->
+            <div class="category-bar">
+                <button class="cat-btn active" onclick="filterMenu('all', event)">🍽️ Tất cả</button>
+                <button class="cat-btn" onclick="filterMenu('drink', event)">🧋 Nước uống</button>
+                <button class="cat-btn" onclick="filterMenu('snack', event)">🥗 Ăn vặt</button>
+            </div>
+
+            <!-- Danh sách món dạng hàng dọc -->
+            <div class="vertical-menu-list" id="verticalMenuList">
+                
+                <!-- Món 1 -->
+                <div class="menu-row" data-category="drink">
+                    <img src="tra-xoai.jpg" alt="Trà Xoài Nhiệt Đới" class="menu-img" onerror="this.src='https://via.placeholder.com/100'">
+                    <div class="menu-info">
+                        <h3>Trà Xoài Nhiệt Đới</h3>
+                        <p class="menu-desc">Trà tươi kết hợp xoài chín mọng ngọt lịm tự nhiên.</p>
+                        <span class="menu-note">⭐ Ghi chú: Bán chạy nhất - Ngon hơn khi uống lạnh</span>
+                    </div>
+                    <div class="menu-right">
+                        <span class="menu-price">25.000₫</span>
+                        <button class="add-cart-btn">Thêm 🛒</button>
+                    </div>
+                </div>
+
+                <!-- Món 2 -->
+                <div class="menu-row" data-category="drink">
+                    <img src="sua-chua-viet-quat.jpg" alt="Sữa Chua Việt Quất" class="menu-img" onerror="this.src='https://via.placeholder.com/100'">
+                    <div class="menu-info">
+                        <h3>Sữa Chua Việt Quất</h3>
+                        <p class="menu-desc">Sữa chua nhà làm sánh mịn hòa quyện mứt việt quất chua ngọt.</p>
+                        <span class="menu-note">⭐ Ghi chú: Ít ngọt, tốt cho tiêu hóa</span>
+                    </div>
+                    <div class="menu-right">
+                        <span class="menu-price">30.000₫</span>
+                        <button class="add-cart-btn">Thêm 🛒</button>
+                    </div>
+                </div>
+
+                <!-- Món 3 -->
+                <div class="menu-row" data-category="snack">
+                    <img src="banh-trang-tron.jpg" alt="Bánh Tráng Trộn Tiệm" class="menu-img" onerror="this.src='https://via.placeholder.com/100'">
+                    <div class="menu-info">
+                        <h3>Bánh Tráng Trộn Tiệm</h3>
+                        <p class="menu-desc">Đậm đà hương vị truyền thống với khô bò, trứng cút, xoài xanh.</p>
+                        <span class="menu-note">⭐ Ghi chú: Có thể điều chỉnh độ cay theo yêu cầu</span>
+                    </div>
+                    <div class="menu-right">
+                        <span class="menu-price">20.000₫</span>
+                        <button class="add-cart-btn">Thêm 🛒</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- JAVASCRIPT XỬ LÝ LỌC DANH MỤC -->
+    <script>
+        function filterMenu(category, e) {
+            const buttons = document.querySelectorAll('.cat-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+
+            const rows = document.querySelectorAll('.menu-row');
+            rows.forEach(row => {
+                const itemCategory = row.getAttribute('data-category');
+                if (category === 'all' || itemCategory === category) {
+                    row.style.display = 'flex';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
