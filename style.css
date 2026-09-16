@@ -49,6 +49,7 @@
 /* ===== BASE ===== */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -57,10 +58,16 @@ body {
   color: var(--text);
   min-height: 100vh;
   line-height: 1.5;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 a {
   color: inherit;
+}
+
+img {
+  max-width: 100%;
 }
 
 ::selection {
@@ -391,6 +398,7 @@ header {
   border: 6px solid #FFFDF9;
   box-shadow: 0 18px 34px -12px rgba(0, 0, 0, 0.45);
   transition: transform 0.4s var(--ease);
+  max-width: none; /* de khong bi rule "img { max-width:100% }" thu nho sai ty le */
 }
 
 .hero-photo-1 {
@@ -452,6 +460,7 @@ header {
   margin-bottom: 30px;
   border-bottom: 2px solid var(--border);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .cat-btn {
@@ -1125,6 +1134,12 @@ footer p {
   box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.5);
 }
 
+.map-container iframe {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+}
+
 /* ===== TOAST ===== */
 .toast {
   position: fixed;
@@ -1141,6 +1156,9 @@ footer p {
   transition: transform 0.4s var(--ease-spring);
   white-space: nowrap;
   box-shadow: var(--shadow-soft);
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .toast.show {
@@ -1324,7 +1342,7 @@ footer p {
 /* ===== THANH HO TRO NOI GOC MAN HINH ===== */
 .support-fixed-bar {
   position: fixed;
-  bottom: 20px;
+  bottom: 100px;
   right: 20px;
   display: flex;
   flex-direction: column;
@@ -1345,6 +1363,7 @@ footer p {
   font-size: 14px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease);
+  white-space: nowrap;
 }
 
 .support-item:hover {
@@ -1396,6 +1415,33 @@ footer p {
     padding-right: 0;
   }
 
+  /* Thu nho cum anh hero de vua man hinh dien thoai, giu dung ty le */
+  .hero-gallery {
+    height: 190px;
+    max-width: 230px;
+  }
+
+  .hero-photo-1 {
+    width: 150px;
+    height: 180px;
+    top: 5px;
+    left: 30px;
+  }
+
+  .hero-photo-2 {
+    width: 105px;
+    height: 105px;
+    top: 95px;
+    left: 0;
+  }
+
+  .hero-photo-3 {
+    width: 105px;
+    height: 130px;
+    top: 0;
+    right: 0;
+  }
+
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
@@ -1417,7 +1463,7 @@ footer p {
 
 @media (max-width: 480px) {
   .support-fixed-bar {
-    bottom: 15px;
+    bottom: 100px;
     right: 15px;
   }
 
