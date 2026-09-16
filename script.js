@@ -378,56 +378,49 @@ menuItems.forEach(item => {
     });
 });
 function submitOrder() {
-    // 1. Lấy thông tin khách hàng từ form nhập
-    const name = document.getElementById('cusName').value.trim();
-    const phone = document.getElementById('cusPhone').value.trim();
-    const address = document.getElementById('cusAddress').value.trim();
-    const payment = document.getElementById('cusPayment').value;
-    const note = document.getElementById('cusNote').value.trim();
+    const name = document.getElementById("cusName").value.trim();
+    const phone = document.getElementById("cusPhone").value.trim();
+    const address = document.getElementById("cusAddress").value.trim();
+    const payment = document.getElementById("cusPayment").value;
+    const note = document.getElementById("cusNote").value.trim();
 
-    // Kiểm tra dữ liệu bắt buộc
     if (!name || !phone || !address) {
-        alert('Vui lòng điền đầy đủ họ tên, số điện thoại và địa chỉ giao hàng nhé!');
+        alert("Vui lòng điền đầy đủ họ tên, số điện thoại và địa chỉ!");
         return;
     }
 
-    // 2. Lấy danh sách món trong giỏ hàng (giả sử giỏ hàng lưu trong mảng cart)
-    let itemsText = "";
-    let totalPrice = 0;
+    let orderDetails = "";
+    let totalMoney = 0;
     
-    // Kiểm tra nếu biến cart của bạn có tồn tại
-    if (typeof cart !== 'undefined' && cart.length > 0) {
-        cart.forEach((item, index) => {
-            let itemTotal = item.price * item.quantity;
-            totalPrice += itemTotal;
-            itemsText += `- ${item.name} (${item.size || 'S'}) x${item.quantity}: ${itemTotal.toLocaleString()}₫\n`;
-        });
-    } else {
-        itemsText = "Khách đặt hàng nhanh qua web\n";
-    }
+    cart.forEach((item) => {
+        let itemTotal = item.price * item.quantity;
+        totalMoney += itemTotal;
+        orderDetails += `- ${item.name} (${item.size || 'S'}): ${item.quantity} x ${item.price.toLocaleString()}đ\n`;
+    });
 
-    // 3. Soạn nội dung tin nhắn gửi qua Zalo
-    const message = `🚨 ĐƠN HÀNG MỚI - TIỆM HAI SÁU 🥭\n\n` +
-                    `👤 Khách hàng: ${name}\n` +
-                    `📞 Số điện thoại: ${phone}\n` +
-                    `📍 Địa chỉ: ${address}\n` +
-                    `💳 Hình thức thanh toán: ${payment}\n` +
-                    `📝 Ghi chú: ${note || 'Không có'}\n\n` +
-                    `🛒 Chi tiết món:\n${itemsText}\n` +
-                    `💰 Tổng tiền: ${totalPrice.toLocaleString()}₫`;
+    let message = `🛒 ĐƠN HÀNG MỚI TỪ TIỆM HAI SÁU\n\n`;
+    message += `👤 Khách hàng: ${name}\n`;
+    message += `📞 Số điện thoại: ${phone}\n`;
+    message += `📍 Địa chỉ: ${address}\n`;
+    message += `💳 Thanh toán: ${payment.toUpperCase()}\n`;
+    if (note) message += `📝 Ghi chú: ${note}\n\n`;
+    message += `📋 Chi tiết món:\n${orderDetails}\n`;
+    message += `💰 Tổng cộng: ${totalMoney.toLocaleString()}đ`;
 
-    // 4. Số điện thoại Zalo nhận đơn của quán (Thay số '0326650638' bằng số Zalo của bạn)
-    const zaloPhone = '0326650638'; 
-
-    // Tạo đường dẫn Zalo Me (hỗ trợ cả trên điện thoại và máy tính)
-    const zaloUrl = `https://zalo.me/${zaloPhone}?text=${encodeURIComponent(message)}`;
-
-    // 5. Đóng form đặt hàng, làm sạch giỏ hàng (nếu muốn) và mở Zalo
-    closeOrderModal();
-    
-    // Hiển thị thông báo thành công ngắn gọn trước khi chuyển qua Zalo
-    alert('Đơn hàng đã được ghi nhận! Hệ thống đang chuyển sang Zalo để gửi đơn cho quán...');
-
-    // Mở link Zalo trong cửa sổ/tab mới
-    window.open(zaloUrl, '_blank');
+    // 1. Tự động sao chép thông tin đơn hàng vào bộ nhớ tạm của máy
+    navigator.clipboard.writeText(message).then(() => {
+        // 2. Hiện thông báo hướng dẫn cực kỳ dễ hiểu cho khách
+        alert("📋 Đã sao chép đơn hàng!\n\nMessenger của quán sẽ mở ra, bạn chỉ cần bấm vào khung tin nhắn và nhấn Ctrl + V (hoặc Dán) rồi Gửi là xong nhé ạ!");
+        
+        // 3. Mở link Facebook Messenger của quán
+        const fbID = "vi.huong.100685";
+        const messengerUrl = `https://m.me/${fbID}`;
+        window.open(messengerUrl, '_blank');
+        
+        // (Tùy chọn) Đóng giỏ hàng hoặc reset form sau khi đặt
+        closeOrderModal();
+    }).catch(err => {
+        console.error('Không thể sao chép: ', err);
+        alert("Có lỗi nhỏ khi sao chép, bạn vui lòng chụp màn hình gửi shop nhé!");
+    });
 }
